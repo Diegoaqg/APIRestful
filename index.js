@@ -3,6 +3,7 @@ const app = exp();
 const mongoose = require('./backend/config/database');
 const logger = require('morgan');
 const modeloCliente = require('./backend/models/cliente.model')
+const modeloUsuario = require('./backend/models/users.models.js')
 require('dotenv').config();
 
 app.use(logger('dev'));
@@ -16,4 +17,21 @@ app.listen(process.env.PORT, ( )=>{
 app.get('/clientes', async (req,res)=>{
     let listaClientes = await modeloCliente.find();
     console.log(listaClientes)
+    res.json(listaClientes)
+});
+
+app.get('/insertarusuario', (req,res)=>{
+    const nuevoUsuario = new modeloUsuario({
+        nombre: 'Juanito',
+        edad: 30,
+        correo: 'juan.perez@ejemplo.com'
+    });
+
+    nuevoUsuario.save()
+        .then(usuario => {
+            console.log('Usuario creado:', usuario);
+        })
+        .catch(err => {
+            console.error('Error al crear usuario:', err);
+        });
 });
